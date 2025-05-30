@@ -8,6 +8,23 @@ import * as React from "react";
 const App = () => {
   console.log("App renders");
 
+  const useSemiPersistentState = (key, initialState) => {
+    const [value, setValue] = React.useState(
+      localStorage.getItem(key) || initialState
+    );
+
+    React.useEffect(() => {
+      localStorage.setItem(key, value);
+    }, [value, key]);
+
+    return [value, setValue];
+  };
+
+  const [searchTerm, setSearchTerm] = useSemiPersistentState(
+    "search",
+    "React"
+  );
+
   const stories = [
     {
       title: "React",
@@ -26,8 +43,6 @@ const App = () => {
       objectID: 1,
     },
   ];
-
-  const [searchTerm, setSearchTerm] = React.useState("");
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -49,6 +64,7 @@ const App = () => {
 
 const Search = ({ searchTerm, onSearch }) => {
   console.log("Search renders");
+
   return (
     <div>
       <label htmlFor="search">Search: </label>
@@ -60,6 +76,7 @@ const Search = ({ searchTerm, onSearch }) => {
 
 const List = ({ list }) => {
   console.log("List renders");
+
   return (
     <ul>
       {list.map((item) => (
@@ -71,14 +88,15 @@ const List = ({ list }) => {
 
 const Item = ({ item }) => {
   console.log("Item renders");
+
   return (
     <li>
       <span>
         <a href={item.url}>{item.title}</a>
-      </span>{" "}
-      <span>{item.author}</span>{" "}
-      <span>{item.num_comments}</span>{" "}
-      <span>{item.points}</span>
+      </span>
+      <span> {item.author}</span>
+      <span> {item.num_comments}</span>
+      <span> {item.points}</span>
     </li>
   );
 };
