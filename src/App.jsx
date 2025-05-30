@@ -3,13 +3,12 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-function getTitle(title){
-  return title;
-} 
-const App = () =>{
-  const stories = [
+import * as React from "react";
+
+// List of items
+const list = [
   {
-    title:"React",
+    title: "React",
     url: "https://reactjs.org/",
     author: "Jordan Walke",
     num_comments: 3,
@@ -17,64 +16,56 @@ const App = () =>{
     objectID: 0,
   },
   {
-    title:"Redux",
-    url: "https://reduxjs.org/",
+    title: "Redux",
+    url: "https://redux.js.org/",
     author: "Dan Abramov, Andrew Clark",
     num_comments: 2,
     points: 5,
-    objectID: 1, 
+    objectID: 1,
   },
-]
+];
 
-return(
-    <div>
-      <h1>My hacker stories</h1>
-      <search />
-      <hr />
-      <list list={stories}/>
-    </div>
+// 1. Refactor App component to arrow function
+const App = () => (
+  <div>
+    <h1>My Hacker Stories</h1>
+    <Search />
+    <hr />
+    <List />
+  </div>
 );
- } ;
 
+// 4. Refactor Search to block body (with logic inside)
+// 5. Add handler function for the input
 const Search = () => {
-  const [searchTerm,setSearchTerm] = React.useState('');
-  const handlechange =(Event)=>{
-    setSearchTerm(Event.target.value);
-    console.log(Event);
-    // value of target (here:input HTML element)
-    console.log(Event.target.value);
-
+  const handleChange = (event) => {
+    console.log(event.target.value);
   };
-return(
-    <div>     
+
+  return (
+    <div>
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onchange={handlechange} />
-      <p>
-        Searching for  <strong>{searchTerm}</strong>
-      </p>
-
+      <input id="search" type="text" onChange={handleChange} />
     </div>
-);
+  );
 };
-const List = (props) => (
-    
-      <ul>
-        {props.list.map((item) => (
-          <item key={item.objectifID} item={item} />
 
-        ))}
-      </ul>
+// 2. Refactor callback in map() to arrow function
+// 3. Refactor List to arrow function and concise body
+const List = () => (
+  <ul>
+    {list.map((item) => (
+      <li key={item.objectID}>
+        <span>
+          <a href={item.url}>{item.title}</a>
+        </span>{" "}
+        <span>{item.author}</span>{" "}
+        <span>{item.num_comments}</span>{" "}
+        <span>{item.points}</span>
+      </li>
+    ))}
+  </ul>
 );
-const item=(props)=>(
- <li>
-    <span>
-      <a herf={item.url}>{item.title}</a>
-    </span>
-    <span>{item.author}</span>
-    <span>{item.num_comments}</span>
-    <span>{item.points}</span>
-  </li>
-);
-
 
 export default App;
+
